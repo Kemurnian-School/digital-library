@@ -4,11 +4,20 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GenresController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('dashboard');
+});
+
+Route::get('/books', function () {
+    return view('books');
 });
 
 Route::get('/genres', function () {
-    return view('');
+    return view('genres');
+});
+
+
+Route::get('/students', function () {
+    return view('students');
 });
 
 Route::resource('genres', GenresController::class);
