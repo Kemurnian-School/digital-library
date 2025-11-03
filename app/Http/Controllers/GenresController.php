@@ -12,7 +12,8 @@ class GenresController extends Controller
      */
     public function index()
     {
-        //
+        $genres = Genres::select('id', 'name')->get();
+        return view('pages.genres', compact('genres'));
     }
 
     /**
@@ -28,7 +29,15 @@ class GenresController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255|unique:genres,name'
+        ]);
+
+        Genres::create([
+            'name' => $request->input('name')
+        ]);
+
+        return redirect()->route('pages.genres');
     }
 
     /**
@@ -61,5 +70,18 @@ class GenresController extends Controller
     public function destroy(Genres $genres)
     {
         //
+    }
+
+    /**
+     * bulk delete
+     */
+    public function bulkDelete(Request $request)
+    {
+        $ids = $request->input('selected_genres', []);
+        if (!empty($ids)) {
+            Genres::whereIn('id', $ids)->delete();
+        }
+
+        return redirect()->route('pages.genres');
     }
 }
