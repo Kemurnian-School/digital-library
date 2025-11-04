@@ -19,7 +19,10 @@ class GenresSeeder extends Seeder
             ['name' => 'Drama'],
             ['name' => 'Fantasy'],
         ];
-
-        Genres::insert($genres);
+        if (Genres::count() === 0) {
+            Genres::insert($genres);
+        } else {
+            echo 'DB Is not empty';
+        }
     }
 }

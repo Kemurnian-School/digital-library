@@ -8,8 +8,9 @@ use Illuminate\Support\Facades\Route;
 
 // Group all admin routes under /admin prefix
 Route::prefix('admin')->group(function () {
-    // Dashboard
+    // Dashboard and Login
     Route::view('/', 'pages.admin.dashboard')->name('dashboard');
+    Route::view('/login', 'pages.admin.login')->name('login');
 
     // Books Routes
     Route::prefix('books')->name('books.')->group(function () {

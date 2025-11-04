@@ -10,14 +10,11 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        if (Schema::hasTable('genres')) {
-            echo 'Genres table already exist';
-        } else {
-            Schema::create('genres', function (Blueprint $table) {
-                $table->id();
-                $table->string('name')->unique();
-            });
-        }
+        Schema::create('admin', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('password');
+        });
     }
 
     /**
@@ -25,6 +22,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('genres');
+        Schema::dropIfExists('admin');
     }
 };
