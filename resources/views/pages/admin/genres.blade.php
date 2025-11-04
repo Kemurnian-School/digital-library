@@ -1,12 +1,13 @@
-<x-layout>
+@extends('layouts.admin')
+
+@section('content')
     <main>
         <div class="flex items-center gap-2 mb-4">
             <span>New genre:</span>
 
             <form action="{{ route('genres.store') }}" method="POST" class="flex gap-2 items-center">
                 @csrf
-                <input type="text" name="name" placeholder="Enter new genre" required
-                    class="border px-2 py-1 rounded">
+                <input type="text" name="name" placeholder="Enter new genre" required class="border px-2 py-1 rounded">
 
                 <button type="submit" class="bg-[#872109] text-white py-2 px-4 rounded-sm cursor-pointer">
                     Add
@@ -52,4 +53,4 @@
             }
         </script>
     </main>
-</x-layout>
+@endsection

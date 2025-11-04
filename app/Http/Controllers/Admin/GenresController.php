@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Genres;
 use Illuminate\Http\Request;
 
@@ -13,7 +14,7 @@ class GenresController extends Controller
     public function index()
     {
         $genres = Genres::select('id', 'name')->get();
-        return view('pages.genres', compact('genres'));
+        return view('pages.admin.genres', compact('genres'));
     }
 
     /**

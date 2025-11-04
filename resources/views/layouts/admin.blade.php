@@ -8,9 +8,9 @@
 </head>
 
 <body class="flex">
-    <x-sidebar />
+    <x-admin.sidebar />
     <div class="bg-white w-full p-2 text-[#171717]">
-        {{ $slot }}
+        @yield('content')
     </div>
 </body>
 

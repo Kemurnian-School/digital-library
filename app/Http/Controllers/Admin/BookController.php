@@ -1,6 +1,7 @@
 <?php
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Book;
 use App\Models\Genres;
 use Illuminate\Http\Request;
@@ -15,7 +16,7 @@ class BookController extends Controller
     {
         $genres = Genres::select('id', 'name')->get();
         $books = Book::with('genre:id,name')->select('id', 'name', 'author', 'genre_id', 'year')->get();
-        return view('pages.books', compact('genres', 'books'));
+        return view('pages.admin.books', compact('genres', 'books'));
     }
 
     /**

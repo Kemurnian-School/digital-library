@@ -1,9 +1,11 @@
-<x-layout>
+@extends('layouts.admin')
+
+@section('content')
     <main class="p-4">
         {{-- Import Form --}}
         <form action="{{ route('students.import') }}" method="POST" enctype="multipart/form-data" class="mb-8">
             @csrf
-            <x-table :columns="['Field', 'Input']" :rows="[['label' => 'Import Students File', 'name' => 'file', 'type' => 'file']]" />
+            <x-admin.table :columns="['Field', 'Input']" :rows="[['label' => 'Import Students File', 'name' => 'file', 'type' => 'file']]" />
             <div class="mt-4">
                 <button type="submit" class="bg-[#872109] text-white py-2 px-4 rounded-sm cursor-pointer">
                     Import
@@ -76,4 +78,4 @@
             }
         });
     </script>
-</x-layout>
+@endsection

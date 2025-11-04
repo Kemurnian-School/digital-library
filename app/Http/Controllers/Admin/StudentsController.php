@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Imports\StudentsImport;
 use App\Models\Students;
 use Illuminate\Http\Request;
@@ -15,7 +16,7 @@ class StudentsController extends Controller
     public function index()
     {
         $students = Students::select('id', 'nis', 'level')->get();
-        return view('pages.students', compact('students'));
+        return view('pages.admin.students', compact('students'));
     }
 
     /**

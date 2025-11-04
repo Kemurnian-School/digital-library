@@ -1,9 +1,11 @@
-<x-layout>
+@extends('layouts.admin')
+
+@section('content')
     <main class="p-4">
         {{-- Book Creation Form --}}
         <form action="{{ route('books.store') }}" method="POST" enctype="multipart/form-data" class="mb-8">
             @csrf
-            <x-table :columns="['Field', 'Input']" :rows="[
+            <x-admin.table :columns="['Field', 'Input']" :rows="[
                 ['label' => 'Name', 'name' => 'name', 'type' => 'text'],
                 ['label' => 'Published Year', 'name' => 'year', 'type' => 'number'],
                 ['label' => 'Author', 'name' => 'author', 'type' => 'text'],
@@ -97,4 +99,4 @@
             });
         });
     </script>
-</x-layout>
+@endsection
