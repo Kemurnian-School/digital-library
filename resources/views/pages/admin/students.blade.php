@@ -3,7 +3,7 @@
 @section('content')
     <main class="p-4">
         {{-- Import Form --}}
-        <form action="{{ route('students.import') }}" method="POST" enctype="multipart/form-data" class="mb-8">
+        <form action="{{ route('admin.students.import') }}" method="POST" enctype="multipart/form-data" class="mb-8">
             @csrf
             <x-admin.table :columns="['Field', 'Input']" :rows="[['label' => 'Import Students File', 'name' => 'file', 'type' => 'file']]" />
             <div class="mt-4">
@@ -14,7 +14,7 @@
         </form>
 
         {{-- Delete Form --}}
-        <form action="{{ route('students.delete') }}" method="POST" id="delete-form">
+        <form action="{{ route('admin.students.delete') }}" method="POST" id="delete-form">
             @csrf
             @method('DELETE')
 

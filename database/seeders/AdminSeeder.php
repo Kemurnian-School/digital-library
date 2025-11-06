@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Admin;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class AdminSeeder extends Seeder
 {
@@ -12,11 +13,9 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
-        $admin = [
-            'name' => env('ADMIN_USERNAME') || 'admin',
-            'password' => env('ADMIN_PASSWORD') || '123'
-        ];
-
-        Admin::insert($admin);
+        Admin::create([
+            'name' => env('ADMIN_USERNAME') ?? 'admin',
+            'password' => Hash::make(env('ADMIN_PASSWORD') ?? '123')
+        ]);
     }
 }

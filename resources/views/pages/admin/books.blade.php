@@ -3,7 +3,7 @@
 @section('content')
     <main class="p-4">
         {{-- Book Creation Form --}}
-        <form action="{{ route('books.store') }}" method="POST" enctype="multipart/form-data" class="mb-8">
+        <form action="{{ route('admin.books.store') }}" method="POST" enctype="multipart/form-data" class="mb-8">
             @csrf
             <x-admin.table :columns="['Field', 'Input']" :rows="[
                 ['label' => 'Name', 'name' => 'name', 'type' => 'text'],
@@ -20,7 +20,7 @@
         </form>
 
         {{-- Delete Form --}}
-        <form action="{{ route('books.bulkDelete') }}" method="POST" id="delete-form">
+        <form action="{{ route('admin.books.bulkDelete') }}" method="POST" id="delete-form">
             @csrf
             @method('DELETE')
 

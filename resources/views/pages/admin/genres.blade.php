@@ -5,7 +5,7 @@
         <div class="flex items-center gap-2 mb-4">
             <span>New genre:</span>
 
-            <form action="{{ route('genres.store') }}" method="POST" class="flex gap-2 items-center">
+            <form action="{{ route('admin.genres.store') }}" method="POST" class="flex gap-2 items-center">
                 @csrf
                 <input type="text" name="name" placeholder="Enter new genre" required class="border px-2 py-1 rounded">
 
@@ -15,7 +15,7 @@
             </form>
         </div>
 
-        <form action="{{ route('genres.delete') }}" method="POST" onsubmit="return confirmDelete()">
+        <form action="{{ route('admin.genres.delete') }}" method="POST" onsubmit="return confirmDelete()">
             @csrf
             @method('DELETE')
 

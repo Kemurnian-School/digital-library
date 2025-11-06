@@ -3,7 +3,7 @@
     <main class="p-4">
         {{-- Book Info --}}
         <div class="mb-4">
-            <a href="{{ route('books.index') }}" class="text-blue-600 hover:underline mb-4 inline-block">
+            <a href="{{ route('admin.books.index') }}" class="text-blue-600 hover:underline mb-4 inline-block">
                 ← Back to Books
             </a>
             <h1 class="text-2xl font-bold text-black">{{ $book->name }}</h1>
