@@ -58,7 +58,7 @@
                             <td class="py-2 px-4">{{ $book->year }}</td>
                             <td class="py-2 px-4">{{ $book->genre->name ?? 'N/A' }}</td>
                             <td class="py-2 px-4">
-                                <a href="{{ route('books.preview', [
+                                <a href="{{ route('admin.books.preview', [
                                     'year' => $book->year,
                                     'genre' => str_replace(' ', '_', strtolower($book->genre->name)),
                                     'id' => $book->id,

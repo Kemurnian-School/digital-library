@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->string('author');
             $table->foreignId('genre_id')->constrained('genres');
             $table->string('file_path')->unique();
+            $table->string('cover_path')->unique();
         });
     }
 

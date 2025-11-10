@@ -17,6 +17,7 @@ class Book extends Model
         'author',
         'genre_id',
         'file_path',
+        'cover_path',
     ];
 
     public $timestamps = false;

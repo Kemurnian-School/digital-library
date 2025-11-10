@@ -8,6 +8,10 @@ use App\Http\Controllers\Admin\{
 };
 use Illuminate\Support\Facades\Route;
 
+// client route
+Route::view('/login', 'pages.client.login');
+Route::view('/', 'pages.client.dashboard')->name('index');
+
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::middleware('guest:admin')->group(function () {
         Route::view('/login', 'pages.admin.login')->name('login');

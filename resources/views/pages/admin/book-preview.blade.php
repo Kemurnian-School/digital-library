@@ -1,5 +1,6 @@
-<!--make it as a pdf preview-->
-<x-layout>
+@extends('layouts.admin')
+
+@section('content')
     <main class="p-4">
         {{-- Book Info --}}
         <div class="mb-4">
@@ -14,14 +15,14 @@
         {{-- PDF Viewer --}}
         <div class="w-full" style="height: calc(100vh - 200px);">
             <iframe
-                src="{{ route('books.serve', [
+                src="{{ route('admin.books.serve', [
                     'year' => $book->year,
                     'genre' => str_replace(' ', '_', strtolower($book->genre->name)),
                     'id' => $book->id,
                 ]) }}"
                 class="w-full h-full border border-gray-300 rounded" type="application/pdf">
                 <p>Your browser does not support PDFs.
-                    <a href="{{ route('books.serve', [
+                    <a href="{{ route('admin.books.serve', [
                         'year' => $book->year,
                         'genre' => str_replace(' ', '_', strtolower($book->genre->name)),
                         'id' => $book->id,
@@ -31,4 +32,4 @@
             </iframe>
         </div>
     </main>
-</x-layout>
+@endsection

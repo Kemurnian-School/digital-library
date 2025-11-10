@@ -1,4 +1,3 @@
-<!-- Your login page at resources/views/pages/admin/login.blade.php -->
 <!DOCTYPE html>
 <html>
 
