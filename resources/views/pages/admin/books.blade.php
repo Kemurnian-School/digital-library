@@ -11,6 +11,7 @@
                 ['label' => 'Author', 'name' => 'author', 'type' => 'text'],
                 ['label' => 'Genre', 'name' => 'genre_id', 'type' => 'select', 'options' => $genres],
                 ['label' => 'File', 'name' => 'file_path', 'type' => 'file'],
+                ['label' => 'Cover', 'name' => 'cover_path', 'type' => 'file'],
             ]" />
             <div class="mt-4">
                 <button type="submit" class="bg-[#872109] text-white py-2 px-4 rounded-sm cursor-pointer">
@@ -42,7 +43,8 @@
                         <th class="py-2 px-4 text-left">Author</th>
                         <th class="py-2 px-4 text-left">Year</th>
                         <th class="py-2 px-4 text-left">Genre</th>
-                        <th class="py-2 px-4 text-left">Action</th>
+                        <th class="py-2 px-4 text-left">File</th>
+                        <th class="py-2 px-4 text-left">Cover</th>
                         <th class="py-2 px-4 text-left">Edit</th>
                         <th class="py-2 px-4 text-left">
                             <input type="checkbox" id="select-all" class="cursor-pointer">
@@ -66,6 +68,14 @@
                                     class="text-blue-600 hover:underline">
                                     Preview PDF
                                 </a>
+                            </td>
+                            <td class="py-2 px-4">
+                                @if ($book->cover_path)
+                                    <img src="{{ asset('storage/' . $book->cover_path) }}" alt="{{ $book->name }} cover"
+                                        class="w-16 h-20 object-cover rounded" />
+                                @else
+                                    <span class="text-gray-400 text-sm">No cover</span>
+                                @endif
                             </td>
                             <td class="py-2 px-4">
                                 <button type="button" class="text-gray-600 hover:text-gray-800">

@@ -11,13 +11,21 @@ services:
     container_name: digital-library-app
     image: digital-library/app
     ports:
-      - "8000:80"
+      - "8000:80"      # Laravel/PHP
+      - "5173:5173"    # Vite dev server
     volumes:
       - ./:/var/www/html
+    working_dir: /var/www/html
+    stdin_open: true
+    tty: true
     depends_on:
       - mysql
     networks:
       - digital-library-net
+    environment:
+      # Needed for Vite to serve correct URLs inside Docker
+      VITE_HOST: 0.0.0.0
+      VITE_PORT: 5173
 
   # --------------------------------
   # The Database (MySQL)

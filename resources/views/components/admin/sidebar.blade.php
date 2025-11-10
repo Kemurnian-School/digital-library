@@ -8,4 +8,3 @@
         @endforeach
     </nav>
 </aside>
-

@@ -33,7 +33,7 @@ class BookController extends Controller
             'author' => 'required|string|max:255',
             'genre_id' => 'required|exists:genres,id',
             'file_path' => 'required|file|mimes:pdf|max:10240',
-            'cover_path' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',  // Optional image, max 5MB
+            'cover_path' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
         ]);
 
         $genre = Genres::find($validated['genre_id']);

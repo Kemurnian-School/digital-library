@@ -61,3 +61,8 @@ echo "Setup Complete!"
 echo "Your application is running at: http://localhost:8000"
 echo "Your MySQL database is available on host port: 33066"
 echo "------------------------------------------"
+
+# Drop into interactive shell inside the app container
+echo "Entering app container shell. Run 'npm run dev' or any commands you need."
+docker compose exec -T app git config --global --add safe.directory /var/www/html
+docker compose exec app bash

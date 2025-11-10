@@ -9,19 +9,21 @@ use Closure;
 class Sidebar extends Component
 {
     public array $links;
+    public string $nis;
+    public string $logoSize;
 
     public function __construct()
     {
         $this->links = [
-            ['label' => 'Dashboard', 'href' => '/admin'],
-            ['label' => 'Books', 'href' => '/admin/books'],
-            ['label' => 'Students', 'href' => '/admin/students'],
-            ['label' => 'Genres', 'href' => '/admin/genres'],
+            ['label' => 'Home', 'href' => '/'],
+            ['label' => 'Saved', 'href' => '/saved'],
         ];
+        $this->nis = "test";
+        $this->logoSize = "2";
     }
 
     public function render(): View|Closure|string
     {
-        return view('components.admin.sidebar');
+        return view('components.client.sidebar');
     }
 }

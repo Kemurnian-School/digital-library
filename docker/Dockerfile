@@ -26,3 +26,4 @@ RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
 
 COPY docker/vhost.conf /etc/apache2/sites-available/000-default.conf
 RUN a2enmod rewrite
+RUN docker-php-ext-install pcntl
