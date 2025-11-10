@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  # --------------------------------
+  # The Application (PHP, Apache, Node)
+  # --------------------------------
+  app:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    container_name: digital-library-app
+    image: digital-library/app
+    ports:
+      - "8000:80"
+    volumes:
+      - ./:/var/www/html
+    depends_on:
+      - mysql
+    networks:
+      - digital-library-net
+
+  # --------------------------------
+  # The Database (MySQL)
+  # --------------------------------
+  mysql:
+    image: mysql:8.0
+    container_name: digital-library-mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: unless-stopped
+    ports:
+      - "33066:3306"
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - digital-library-net
+
+# --------------------------------
+# Shared Volumes and Networks
+# --------------------------------
+volumes:
+  mysql-data:
+    driver: local
+
+networks:
+  digital-library-net:
+    driver: bridge
