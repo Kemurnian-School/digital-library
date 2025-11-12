@@ -6,7 +6,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 use Closure;
 
-class Sidebar extends Component
+class Navbar extends Component
 {
     public array $links;
     public string $nis;
@@ -18,12 +18,12 @@ class Sidebar extends Component
             ['label' => 'Home', 'href' => '/'],
             ['label' => 'Saved', 'href' => '/saved'],
         ];
-        $this->nis = "test";
-        $this->logoSize = "2";
+        $this->nis = '1234';
+        $this->logoSize = '2';
     }
 
     public function render(): View|Closure|string
     {
-        return view('components.client.sidebar');
+        return view('components.client.navbar');
     }
 }

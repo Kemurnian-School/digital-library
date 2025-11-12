@@ -12,6 +12,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        $middleware->alias([
+            'student.auth' => \App\Http\Middleware\StudentAuth::class,
+        ]);
+    })
+    ->withMiddleware(function (Middleware $middleware) {
         $middleware->redirectTo(function (Request $request) {
             if ($request->expectsJson()) {
                 return null;

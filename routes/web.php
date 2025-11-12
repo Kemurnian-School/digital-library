@@ -1,21 +1,42 @@
 <?php
-
 use App\Http\Controllers\Admin\{
-    BookController,
+    BookController as AdminBookController,
     GenresController,
     StudentsController,
-    LoginController
+    LoginController as AdminLoginController
+};
+use App\Http\Controllers\Client\{
+    HomeController,
+    BookController as ClientBookController,
+    LoginController as ClientLoginController
 };
 use Illuminate\Support\Facades\Route;
 
-// client route
-Route::view('/login', 'pages.client.login');
-Route::view('/', 'pages.client.dashboard')->name('index');
+Route::middleware('guest')->group(function () {
+    Route::view('/login', 'pages.client.login')->name('client.login');
+    Route::post('/login', [ClientLoginController::class, 'login']);
+});
+
+// Client routes
+Route::middleware('student.auth')->group(function () {
+    Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::post('/logout', [ClientLoginController::class, 'logout'])->name('client.logout');
+
+    // Books Routes (Client)
+    Route::prefix('books')->name('books.')->group(function () {
+        Route::get('/{year}/{genre}/{id}', [ClientBookController::class, 'preview'])
+            ->where(['year' => '[0-9]+', 'id' => '[0-9]+'])
+            ->name('preview');
+        Route::get('/api/{year}/{genre}/{id}/pdf', [ClientBookController::class, 'servePdf'])
+            ->where(['year' => '[0-9]+', 'id' => '[0-9]+'])
+            ->name('serve');
+    });
+});
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::middleware('guest:admin')->group(function () {
         Route::view('/login', 'pages.admin.login')->name('login');
-        Route::post('/login', [LoginController::class, 'login']);
+        Route::post('/login', [AdminLoginController::class, 'login']);
     });
 
     Route::middleware('auth:admin')->group(function () {
@@ -23,17 +44,17 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::view('/', 'pages.admin.dashboard')->name('dashboard');
 
         // Logout
-        Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+        Route::post('/logout', [AdminLoginController::class, 'logout'])->name('logout');
 
-        // Books Routes
+        // Books Routes (Admin)
         Route::prefix('books')->name('books.')->group(function () {
-            Route::get('/', [BookController::class, 'index'])->name('index');
-            Route::post('/', [BookController::class, 'store'])->name('store');
-            Route::delete('/delete', [BookController::class, 'bulkDelete'])->name('bulkDelete');
-            Route::get('/{year}/{genre}/{id}', [BookController::class, 'preview'])
+            Route::get('/', [AdminBookController::class, 'index'])->name('index');
+            Route::post('/', [AdminBookController::class, 'store'])->name('store');
+            Route::delete('/delete', [AdminBookController::class, 'bulkDelete'])->name('bulkDelete');
+            Route::get('/{year}/{genre}/{id}', [AdminBookController::class, 'preview'])
                 ->where(['year' => '[0-9]+', 'id' => '[0-9]+'])
                 ->name('preview');
-            Route::get('/api/{year}/{genre}/{id}/pdf', [BookController::class, 'servePdf'])
+            Route::get('/api/{year}/{genre}/{id}/pdf', [AdminBookController::class, 'servePdf'])
                 ->where(['year' => '[0-9]+', 'id' => '[0-9]+'])
                 ->name('serve');
         });

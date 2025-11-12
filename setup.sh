@@ -47,6 +47,9 @@ echo "Building assets..."
 docker compose exec -T app npm run build
 
 echo "Setting directory permissions for Laravel..."
+# Create all necessary directories first
+docker compose exec -T app mkdir -p storage/pail storage/logs storage/framework/cache storage/framework/sessions storage/framework/views storage/app/public bootstrap/cache
+# Set ownership and permissions
 docker compose exec -T app chown -R www-data:www-data storage bootstrap/cache
 docker compose exec -T app chmod -R 775 storage bootstrap/cache
 
@@ -62,7 +65,11 @@ echo "Your application is running at: http://localhost:8000"
 echo "Your MySQL database is available on host port: 33066"
 echo "------------------------------------------"
 
+# Git config
+docker compose exec -T app git config --global --add safe.directory /var/www/html
+docker compose exec app chown -R www-data:www-data /var/www/html/storage
+docker compose exec app chmod -R 775 /var/www/html/storage
+
 # Drop into interactive shell inside the app container
 echo "Entering app container shell. Run 'npm run dev' or any commands you need."
-docker compose exec -T app git config --global --add safe.directory /var/www/html
 docker compose exec app bash

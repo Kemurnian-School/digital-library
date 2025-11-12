@@ -7,9 +7,9 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="flex">
-    <x-client.sidebar />
-    <div class="bg-white w-full p-2 text-[#171717]">
+<body class="flex flex-col bg-[#eff1f5]">
+    <x-client.navbar />
+    <div class="w-full p-2 mt-14 text-[#171717]">
         @yield('content')
     </div>
 </body>
