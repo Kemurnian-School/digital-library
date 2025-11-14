@@ -19,18 +19,25 @@ class StudentsController extends Controller
         return view('pages.admin.students', compact('students'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nis' => 'required|string|max:255|unique:students,nis',
+            'name' => 'required|string|max:255',
+        ]);
+
+        Students::create([
+            'nis' => $request->nis,
+            'name' => $request->name,
+        ]);
+
+        return back()->with('success', 'Student added successfully');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function import(Request $request)
     {
         $request->validate([
             'file' => 'required|mimes:xlsx,csv|max:2048',

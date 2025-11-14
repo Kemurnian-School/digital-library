@@ -69,7 +69,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Students Routes
         Route::prefix('students')->name('students.')->group(function () {
             Route::get('/', [StudentsController::class, 'index'])->name('index');
-            Route::post('/', [StudentsController::class, 'store'])->name('import');
+            Route::post('/', [StudentsController::class, 'store'])->name('store');
+            Route::post('/import', [StudentsController::class, 'import'])->name('import');
             Route::delete('/', [StudentsController::class, 'bulkDelete'])->name('delete');
         });
     });
