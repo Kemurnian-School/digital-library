@@ -17,22 +17,38 @@
             @csrf
             <div class="flex flex-col mb-1">
                 <label for="nis" class="text-lg">NIS</label>
-                <input id="nis" name="nis" type="text" class="border-1 py-2 px-3 rounded-sm text-xl"
+                <input id="nis" name="nis" type="text" class="border-1 py-2 px-3 rounded-sm text-xl w-72"
                     value="{{ old('nis') }}" required>
+                @error('nis')
+                    <span class="text-red-600 text-sm mt-1">{{ $message }}</span>
+                @enderror
             </div>
 
-            <div class="flex flex-col mb-4">
+            <div class="flex flex-col mb-1">
                 <label for="level" class="text-lg">Level</label>
-                <select id="level" name="level" class="border-1 py-2 px-3 rounded-sm text-xl w-78" required>
+                <select id="level" name="level" class="border-1 py-2 px-3 rounded-sm text-xl w-72" required>
                     <option value="">Select Level</option>
                     <option value="sd" {{ old('level') == 'sd' ? 'selected' : '' }}>SD</option>
                     <option value="smp" {{ old('level') == 'smp' ? 'selected' : '' }}>SMP</option>
                     <option value="sma" {{ old('level') == 'sma' ? 'selected' : '' }}>SMA</option>
                 </select>
+                @error('level')
+                    <span class="text-red-600 text-sm mt-1">{{ $message }}</span>
+                @enderror
             </div>
 
-            @if ($errors->any())
-                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+            <div class="flex flex-col mb-4">
+                <label for="password" class="text-lg">Password</label>
+                <input id="password" name="password" type="password" class="border-1 py-2 px-3 rounded-sm text-xl w-72"
+                    placeholder="Leave blank if not set">
+                @error('password')
+                    <span class="text-red-600 text-sm mt-1">{{ $message }}</span>
+                @enderror
+                <span class="text-xs text-gray-600 mt-1">Leave blank if you haven't set a password yet</span>
+            </div>
+
+            @if ($errors->any() && !$errors->has('nis') && !$errors->has('level') && !$errors->has('password'))
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 w-72">
                     @foreach ($errors->all() as $error)
                         <p class="text-sm">{{ $error }}</p>
                     @endforeach

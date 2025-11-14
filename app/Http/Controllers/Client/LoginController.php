@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Models\Students;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
@@ -16,26 +17,63 @@ class LoginController extends Controller
         $credentials = $request->validate([
             'nis' => 'required|string',
             'level' => 'required|in:sd,smp,sma',
+            'password' => 'nullable|string'
         ]);
 
-        // Find student with matching NIS and level
+        /*
+         * Find student with matching NIS and level
+         */
         $student = Students::where('nis', $credentials['nis'])
             ->where('level', $credentials['level'])
             ->first();
 
-        if ($student) {
+        /*
+         * Check if student exist
+         */
+        if (!$student) {
+            return back()->withErrors([
+                'nis' => 'The provided NIS and level do not match our records.',
+            ])->onlyInput('nis', 'level');
+        }
+
+        /*
+         * Condition if password is null
+         */
+        if ($student->password === null) {
             // Store student info in session
             $request->session()->regenerate();
             $request->session()->put('student_id', $student->id);
             $request->session()->put('student_nis', $student->nis);
             $request->session()->put('student_level', $student->level);
+            $request->session()->put('needs_password_setup', true);
 
             return redirect()->intended(route('home'));
-        }
+        } else {
+            /*
+             * Condition if password is not null
+             */
+            $inputPassword = $request->input('password');
 
-        return back()->withErrors([
-            'nis' => 'The provided NIS and level do not match our records.',
-        ])->onlyInput('nis', 'level');
+            if (empty($inputPassword)) {
+                return back()->withErrors([
+                    'password' => 'Password required for this account',
+                ])->onlyInput('nis', 'level');
+            }
+
+            if (Hash::check($inputPassword, $student->password)) {
+                $request->session()->regenerate();
+                $request->session()->put('student_id', $student->id);
+                $request->session()->put('student_nis', $student->nis);
+                $request->session()->put('student_level', $student->level);
+                $request->session()->put('needs_password_setup', false);
+
+                return redirect()->intended(route('home'));
+            } else {
+                return back()->withErrors([
+                    'password' => 'The provided password is incorrect.',
+                ])->onlyInput('nis', 'level');
+            }
+        }
     }
 
     /**

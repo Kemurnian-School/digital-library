@@ -13,6 +13,7 @@ class Students extends Model
 
     protected $fillable = [
         'nis',
-        'level'
+        'level',
+        'password'
     ];
 }
