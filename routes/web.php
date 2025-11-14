@@ -72,6 +72,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::post('/', [StudentsController::class, 'store'])->name('store');
             Route::post('/import', [StudentsController::class, 'import'])->name('import');
             Route::delete('/', [StudentsController::class, 'bulkDelete'])->name('delete');
+            Route::put('/reset', [StudentsController::class, 'passwordReset'])->name('reset');
         });
     });
 });

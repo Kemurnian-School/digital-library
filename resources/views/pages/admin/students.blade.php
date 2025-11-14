@@ -81,19 +81,22 @@
             </form>
         </div>
 
-        {{-- Delete Form --}}
-        <form action="{{ route('admin.students.delete') }}" method="POST" id="delete-form">
-            @csrf
-            @method('DELETE')
-
-            {{-- Student List Table --}}
+        {{-- Student List Table with Action Buttons --}}
+        <div class="mb-8">
             <div class="flex justify-between items-center mb-2">
                 <h2 class="text-lg font-semibold mb-2 text-black">All Students</h2>
-                <button type="submit" class="bg-red-600 text-white py-2 px-4 rounded-sm cursor-pointer hover:bg-red-700"
-                    onclick="return confirm('Are you sure you want to delete the selected students?')">
-                    Delete Selected
-                </button>
+                <div class="flex gap-2">
+                    <button type="button" id="reset-btn"
+                        class="bg-yellow-600 text-white py-2 px-4 rounded-sm cursor-pointer hover:bg-yellow-700">
+                        Reset Password
+                    </button>
+                    <button type="button" id="delete-btn"
+                        class="bg-red-600 text-white py-2 px-4 rounded-sm cursor-pointer hover:bg-red-700">
+                        Delete Selected
+                    </button>
+                </div>
             </div>
+
             <table class="border border-gray-300 rounded-sm w-full">
                 <thead class="bg-red-600 text-white">
                     <tr>
@@ -123,6 +126,20 @@
                     @endforelse
                 </tbody>
             </table>
+        </div>
+
+        {{-- Hidden Reset Form --}}
+        <form id="reset-form" action="{{ route('admin.students.reset') }}" method="POST" style="display: none;">
+            @csrf
+            @method('PUT')
+            <div id="reset-inputs"></div>
+        </form>
+
+        {{-- Hidden Delete Form --}}
+        <form id="delete-form" action="{{ route('admin.students.delete') }}" method="POST" style="display: none;">
+            @csrf
+            @method('DELETE')
+            <div id="delete-inputs"></div>
         </form>
 
         {{-- Success/Error Messages --}}
@@ -152,13 +169,66 @@
             });
         });
 
-        // Prevent delete if no checkbox is selected
-        document.getElementById('delete-form').addEventListener('submit', function(e) {
+        // Get selected student IDs
+        function getSelectedIds() {
             const checkedBoxes = document.querySelectorAll('.student-checkbox:checked');
-            if (checkedBoxes.length === 0) {
-                e.preventDefault();
-                alert('Please select at least one student to delete.');
+            return Array.from(checkedBoxes).map(cb => cb.value);
+        }
+
+        // Reset Password Button
+        document.getElementById('reset-btn').addEventListener('click', function() {
+            const selectedIds = getSelectedIds();
+
+            if (selectedIds.length === 0) {
+                alert('Please select at least one student to reset password.');
+                return;
             }
+
+            if (!confirm('Are you sure you want to reset the password for the selected students?')) {
+                return;
+            }
+
+            // Add selected IDs to reset form
+            const resetInputs = document.getElementById('reset-inputs');
+            resetInputs.innerHTML = '';
+            selectedIds.forEach(id => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'studentsId[]';
+                input.value = id;
+                resetInputs.appendChild(input);
+            });
+
+            // Submit reset form
+            document.getElementById('reset-form').submit();
+        });
+
+        // Delete Button
+        document.getElementById('delete-btn').addEventListener('click', function() {
+            const selectedIds = getSelectedIds();
+
+            if (selectedIds.length === 0) {
+                alert('Please select at least one student to delete.');
+                return;
+            }
+
+            if (!confirm('Are you sure you want to delete the selected students?')) {
+                return;
+            }
+
+            // Add selected IDs to delete form
+            const deleteInputs = document.getElementById('delete-inputs');
+            deleteInputs.innerHTML = '';
+            selectedIds.forEach(id => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'studentsId[]';
+                input.value = id;
+                deleteInputs.appendChild(input);
+            });
+
+            // Submit delete form
+            document.getElementById('delete-form').submit();
         });
     </script>
 @endsection

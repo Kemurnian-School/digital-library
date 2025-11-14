@@ -97,4 +97,20 @@ class StudentsController extends Controller
             'deleted_count' => $deleted,
         ]);
     }
+
+    /*
+     * Reset password by nulling the password column
+     */
+    public function passwordReset(Request $request)
+    {
+        $studentsId = $request->input('studentsId');
+
+        if (!$studentsId) {
+            return response()->json(['error' => 'invalid input'], 400);
+        }
+
+        Students::whereIn('id', $studentsId)->update(['password' => null]);
+
+        return back()->with('success', 'reset successful');
+    }
 }
