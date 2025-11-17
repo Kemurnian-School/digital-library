@@ -12,25 +12,22 @@ use App\Http\Controllers\Client\{
 };
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('guest')->group(function () {
-    Route::view('/login', 'pages.client.login')->name('client.login');
-    Route::post('/login', [ClientLoginController::class, 'login']);
-});
+Route::view('/login', 'pages.client.login')->name('login');
+Route::post('/login', [ClientLoginController::class, 'login'])->name('client.login');
+Route::post('/guest', [ClientLoginController::class, 'continueAsGuest'])->name('client.guest');
 
-// Client routes
-Route::middleware('student.auth')->group(function () {
-    Route::get('/', [HomeController::class, 'index'])->name('home');
-    Route::post('/logout', [ClientLoginController::class, 'logout'])->name('client.logout');
+// Client routes - no middleware needed
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::post('/logout', [ClientLoginController::class, 'logout'])->name('client.logout');
 
-    // Books Routes (Client)
-    Route::prefix('books')->name('books.')->group(function () {
-        Route::get('/{year}/{genre}/{id}', [ClientBookController::class, 'preview'])
-            ->where(['year' => '[0-9]+', 'id' => '[0-9]+'])
-            ->name('preview');
-        Route::get('/api/{year}/{genre}/{id}/pdf', [ClientBookController::class, 'servePdf'])
-            ->where(['year' => '[0-9]+', 'id' => '[0-9]+'])
-            ->name('serve');
-    });
+// Books Routes (Client)
+Route::prefix('books')->name('books.')->group(function () {
+    Route::get('/{year}/{genre}/{id}', [ClientBookController::class, 'preview'])
+        ->where(['year' => '[0-9]+', 'id' => '[0-9]+'])
+        ->name('preview');
+    Route::get('/api/{year}/{genre}/{id}/pdf', [ClientBookController::class, 'servePdf'])
+        ->where(['year' => '[0-9]+', 'id' => '[0-9]+'])
+        ->name('serve');
 });
 
 Route::prefix('admin')->name('admin.')->group(function () {

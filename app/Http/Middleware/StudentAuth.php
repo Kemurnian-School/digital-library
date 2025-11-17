@@ -2,9 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Closure;
 
 class StudentAuth
 {
@@ -13,10 +13,6 @@ class StudentAuth
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!$request->session()->has('student_id')) {
-            return redirect('/login');
-        }
-
         return $next($request);
     }
 }

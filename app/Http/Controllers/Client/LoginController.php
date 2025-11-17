@@ -14,6 +14,11 @@ class LoginController extends Controller
      */
     public function login(Request $request)
     {
+        // Redirect if already logged in
+        if ($request->session()->has('student_id')) {
+            return redirect()->route('home');
+        }
+
         $credentials = $request->validate([
             'nis' => 'required|string',
             'level' => 'required|in:sd,smp,sma',
@@ -77,14 +82,26 @@ class LoginController extends Controller
     }
 
     /**
+     * Handle guest access
+     */
+    public function continueAsGuest(Request $request)
+    {
+        // Clear any existing session data
+        $request->session()->forget(['student_id', 'student_nis', 'student_level', 'needs_password_setup']);
+        $request->session()->put('is_guest', true);
+
+        return redirect()->route('home');
+    }
+
+    /**
      * Log the student out.
      */
     public function logout(Request $request)
     {
-        $request->session()->forget(['student_id', 'student_nis', 'student_level']);
+        $request->session()->forget(['student_id', 'student_nis', 'student_level', 'needs_password_setup', 'is_guest']);
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/login');
+        return redirect()->route('login');
     }
 }

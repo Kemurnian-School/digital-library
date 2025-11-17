@@ -16,4 +16,8 @@ class Students extends Model
         'level',
         'password'
     ];
+    public function borrowRecords()
+    {
+        return $this->hasMany(BorrowRecord::class, 'student_id');
+    }
 }

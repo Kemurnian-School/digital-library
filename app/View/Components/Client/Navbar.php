@@ -9,8 +9,10 @@ use Closure;
 class Navbar extends Component
 {
     public array $links;
-    public string $nis;
-    public string $logoSize;
+    public ?string $nis;
+    public bool $isGuest;
+    public bool $needsPasswordSetup;
+    public bool $isLoggedIn;
 
     public function __construct()
     {
@@ -18,8 +20,12 @@ class Navbar extends Component
             ['label' => 'Home', 'href' => '/'],
             ['label' => 'Saved', 'href' => '/saved'],
         ];
-        $this->nis = '1234';
-        $this->logoSize = '2';
+
+        // Check if user is logged in (has student_id in session)
+        $this->isLoggedIn = session()->has('student_id');
+        $this->isGuest = session('is_guest', false);
+        $this->nis = session('student_nis');
+        $this->needsPasswordSetup = session('needs_password_setup', false);
     }
 
     public function render(): View|Closure|string

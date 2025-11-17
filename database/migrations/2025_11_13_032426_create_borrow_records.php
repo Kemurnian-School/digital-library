@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->foreignId('student_id')->constrained('students');
             $table->foreignId('class_id')->constrained('classroom');
             $table->foreignId('book_id')->constrained('books');
+            $table->boolean('status');
             $table->date('date_borrowed');
             $table->date('date_returned')->nullable();
         });
