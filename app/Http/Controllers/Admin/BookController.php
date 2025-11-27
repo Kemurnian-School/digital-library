@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Book;
 use App\Models\Genres;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -67,8 +66,7 @@ class BookController extends Controller
             $coverFilename = 'cover.' . $coverExtension;
             $coverPath = $request->file('cover_path')->storeAs($baseFolder, $coverFilename, 'public');
         } else {
-            // Extract first page from PDF as cover
-            $coverPath = $this->extractPdfCover($pdfPath, $baseFolder);
+            echo 'no cover';
         }
 
         // Update the file paths
@@ -83,41 +81,6 @@ class BookController extends Controller
     /**
      * Extract the first page of a PDF and save it as an image
      */
-    private function extractPdfCover($pdfPath, $baseFolder)
-    {
-        try {
-            $fullPdfPath = Storage::disk('public')->path($pdfPath);
-
-            // Create Imagick instance
-            $imagick = new \Imagick();
-            $imagick->setResolution(150, 150);
-            $imagick->readImage($fullPdfPath . '[0]');
-            $imagick->setImageFormat('jpg');
-            $imagick->setImageCompression(\Imagick::COMPRESSION_JPEG);
-            $imagick->setImageCompressionQuality(85);
-
-            // Convert to RGB color space (PDF might be CMYK)
-            $imagick->transformImageColorspace(\Imagick::COLORSPACE_SRGB);
-
-            // Get the image as blob
-            $imageBlob = $imagick->getImageBlob();
-
-            // Clean up
-            $imagick->clear();
-            $imagick->destroy();
-
-            // Save the image
-            $coverFilename = 'cover.jpg';
-            $coverPath = $baseFolder . '/' . $coverFilename;
-            Storage::disk('public')->put($coverPath, $imageBlob);
-
-            return $coverPath;
-        } catch (\Exception $e) {
-            // If extraction fails, log the error and return empty string
-            Log::error('PDF cover extraction failed: ' . $e->getMessage());
-            return '';
-        }
-    }
 
     /**
      * Show PDF preview page

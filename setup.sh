@@ -1,75 +1,50 @@
 #!/bin/bash
-set -e
 
-echo "Starting setup for the Digital Library project..."
+docker-compose down -v
 
-if [ ! -f ".env" ]; then
-    echo "Creating new .env file..."
-    cat > .env << EOL
-APP_NAME=Laravel
-APP_ENV=local
-APP_KEY=
-APP_DEBUG=true
-APP_URL=http://localhost:8000
+echo "Building containers..."
+docker-compose build --no-cache
 
-DB_CONNECTION=mysql
-DB_HOST=mysql
-DB_PORT=3306
-DB_DATABASE=digital_library
-DB_USERNAME=root
-DB_PASSWORD=secret
+echo "Starting containers..."
+docker-compose up -d
 
-LOG_CHANNEL=stack
-LOG_DEPRECATIONS_CHANNEL=null
-LOG_LEVEL=debug
-BROADCAST_DRIVER=log
-CACHE_DRIVER=file
-FILESYSTEM_DISK=local
-QUEUE_CONNECTION=sync
-SESSION_DRIVER=file
-SESSION_LIFETIME=120
-EOL
-    echo ".env file created."
-else
-    echo "Existing .env file found. Skipping creation."
+echo "Waiting for containers to be ready..."
+sleep 15
+
+if ! docker-compose ps | grep -q "app.*Up"; then
+    echo "App container failed to start. Checking logs..."
+    docker-compose logs app
+    exit 1
 fi
 
-echo "Building and starting Docker containers..."
-docker compose up -d --build
-
+# Install composer dependencies
 echo "Installing Composer dependencies..."
-docker compose exec -T app composer install
+docker-compose exec -T app composer install --no-interaction
 
-echo "Installing NPM dependencies..."
-docker compose exec -T app npm install
+# Generate app key if needed
+echo "Generating application key..."
+docker-compose exec -T app php artisan key:generate --force
 
-echo "Building assets..."
-docker compose exec -T app npm run build
+# Wait a bit more for MySQL
+echo "Waiting for MySQL to be fully ready..."
+sleep 5
 
-echo "Setting directory permissions for Laravel..."
-# Create all necessary directories first
-docker compose exec -T app mkdir -p storage/pail storage/logs storage/framework/cache storage/framework/sessions storage/framework/views storage/app/public bootstrap/cache
-# Set ownership and permissions
-docker compose exec -T app chown -R www-data:www-data storage bootstrap/cache
-docker compose exec -T app chmod -R 775 storage bootstrap/cache
+# Run migrations
+echo "Running migrations..."
+docker-compose exec -T app php artisan migrate --force
 
-echo "Generating app key..."
-docker compose exec -T app php artisan key:generate
+echo "Fixing permissions..."
+docker-compose exec -T app chmod -R 777 storage bootstrap/cache
 
-echo "Running database migrations..."
-docker compose exec -T app php artisan migrate
-
-echo "------------------------------------------"
-echo "Setup Complete!"
-echo "Your application is running at: http://localhost:8000"
-echo "Your MySQL database is available on host port: 33066"
-echo "------------------------------------------"
-
-# Git config
-docker compose exec -T app git config --global --add safe.directory /var/www/html
-docker compose exec app chown -R www-data:www-data /var/www/html/storage
-docker compose exec app chmod -R 775 /var/www/html/storage
-
-# Drop into interactive shell inside the app container
-echo "Entering app container shell. Run 'npm run dev' or any commands you need."
-docker compose exec app bash
+echo ""
+echo "Your application is ready:"
+echo ""
+echo "   Web:   http://localhost:8000"
+echo "   Vite:  http://localhost:5173"
+echo "   MySQL: localhost:3306"
+echo ""
+echo "Useful commands:"
+echo "   View logs:     docker-compose logs -f"
+echo "   Enter app:     docker-compose exec app bash"
+echo "   Stop all:      docker-compose down"
+echo ""

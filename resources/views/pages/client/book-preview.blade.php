@@ -26,9 +26,50 @@
                 </div>
                 <p class="text-gray-600">Genre: {{ $book->genre->name }}</p>
             </div>
+
+            {{-- Borrow Button --}}
+            @if(session()->has('student_id'))
+                <form action="{{ url('borrow/create') }}" method="POST" class="mt-4">
+                    @csrf
+                    <input type="hidden" name="student_id" value="{{ session('student_id') }}">
+                    <input type="hidden" name="book_id" value="{{ $book->id }}">
+                    <input type="hidden" name="date_borrowed" value="{{ date('Y-m-d') }}">
+                    <input type="hidden" name="status" value="pending">
+
+                    <button type="submit" class="mt-4 flex items-center bg-green-600 hover:bg-green-700 rounded-md text-white gap-2 px-4 py-2 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                            <path d="M21 16.42V4.993C21 4.445 20.555 4 20.007 4H3.993C3.445 4 3 4.445 3 4.993v14.014c0 .548.445.993.993.993h16.014a.994.994 0 0 0 .993-.993zM19 11V6h2v5h-2zm0 2h2v5h-2v-5zM5 6h12v12H5V6zm2 2v8h8V8H7zm2 2h4v4H9v-4z"/>
+                        </svg>
+                        Borrow This Book
+                    </button>
+                </form>
+            @endif
+
+            {{-- Success/Error Messages --}}
+            @if(session('success'))
+                <div class="mt-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="mt-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                    {{ session('error') }}
+                </div>
+            @endif
+
+            @if($errors->any())
+                <div class="mt-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                    <ul class="list-disc list-inside">
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
         </section>
 
-        <div id="book-viewer-container" class="mt-1 flex-grow flex flex-col items-center justify-center relative select-none"
+        <div id="book-viewer-container" class="mt-1 flex flex-col items-center justify-center relative select-none"
             data-pdf-url="{{ route('books.serve', [
                 'year' => $book->year,
                 'genre' => str_replace(' ', '_', strtolower($book->genre->name)),
@@ -58,7 +99,7 @@
             </div>
 
             {{-- Page Navigation Controls --}}
-            <div id="navigation-controls" class="flex-shrink-0 w-full flex justify-center items-center p-2 gap-4">
+            <div id="navigation-controls" class="w-full flex justify-center items-center p-2 gap-4">
                 <button id="prev-page" class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-1 px-2 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
                     Previous
                 </button>

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Enums\BorrowStatus;
 
 class BorrowRecord extends Model
 {
@@ -19,7 +20,7 @@ class BorrowRecord extends Model
     ];
 
     protected $casts = [
-        'status' => 'boolean',
+        'status' => BorrowStatus::class,
         'date_borrowed' => 'date',
         'date_returned' => 'date',
     ];

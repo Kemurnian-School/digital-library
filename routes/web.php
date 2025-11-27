@@ -8,7 +8,8 @@ use App\Http\Controllers\Admin\{
 use App\Http\Controllers\Client\{
     HomeController,
     BookController as ClientBookController,
-    LoginController as ClientLoginController
+    LoginController as ClientLoginController,
+    BorrowBookController as ClientBorrowBookController
 };
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +29,10 @@ Route::prefix('books')->name('books.')->group(function () {
     Route::get('/api/{year}/{genre}/{id}/pdf', [ClientBookController::class, 'servePdf'])
         ->where(['year' => '[0-9]+', 'id' => '[0-9]+'])
         ->name('serve');
+});
+
+Route::prefix('borrow')->name('borrow.')->group(function () {
+    Route::post('/create', [ClientBorrowBookController::class, 'store']);
 });
 
 Route::prefix('admin')->name('admin.')->group(function () {

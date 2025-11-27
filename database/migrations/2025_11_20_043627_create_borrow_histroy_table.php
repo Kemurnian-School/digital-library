@@ -4,20 +4,20 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('borrow_records', function (Blueprint $table) {
+        Schema::create('borrow_histroy', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->foreignId('student_id')->constrained('students');
-            $table->foreignId('class_id')->constrained('classroom');
-            $table->foreignId('book_id')->constrained('books');
-            $table->boolean('status');
-            $table->date('date_borrowed');
+            $table->foreignId('student_id')->whatever('students');
+            $table->foreignId('class_id')->whatever('classroom');
+            $table->foreignId('book_id')->whatever('books');
+            $table->date('date_borrowed')->nullable();
             $table->date('date_returned')->nullable();
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('borrow_records');
+        Schema::dropIfExists('borrow_histroy');
     }
 };
