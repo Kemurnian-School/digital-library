@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->timestamps();
             $table->foreignId('student_id')->constrained('students');
-            $table->foreignId('class_id')->constrained('classroom');
+            $table->foreignId('class_id')->nullable()->constrained('classroom');
             $table->foreignId('book_id')->constrained('books');
             $table->enum('status', ['pending', 'active'])->default('pending');
             $table->date('date_borrowed')->nullable();

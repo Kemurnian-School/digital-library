@@ -1,4 +1,5 @@
 <?php
+
 use App\Http\Controllers\Admin\{
     BookController as AdminBookController,
     GenresController,
@@ -32,7 +33,7 @@ Route::prefix('books')->name('books.')->group(function () {
 });
 
 Route::prefix('borrow')->name('borrow.')->group(function () {
-    Route::post('/create', [ClientBorrowBookController::class, 'store']);
+    Route::post('/create', [ClientBorrowBookController::class, 'store'])->name('store');
 });
 
 Route::prefix('admin')->name('admin.')->group(function () {

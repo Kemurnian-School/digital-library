@@ -10,6 +10,8 @@ class BorrowRecord extends Model
 {
     use HasFactory;
 
+    protected $table = 'active_borrow';
+
     protected $fillable = [
         'student_id',
         'class_id',
@@ -50,18 +52,18 @@ class BorrowRecord extends Model
     }
 
     /**
-     * Check if book is currently borrowed (status = true means borrowed)
+     * Check if book is currently borrowed
      */
     public function isBorrowed()
     {
-        return $this->status === true;
+        return in_array($this->status, ['pending', 'active']);
     }
 
     /**
-     * Check if book has been returned (status = false means returned)
+     * Check if book has been returned
      */
     public function isReturned()
     {
-        return $this->status === false;
+        return $this->status === 'returned';
     }
 }

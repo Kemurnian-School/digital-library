@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Models\BorrowRecord;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class BorrowBookController extends Controller
 {
@@ -13,67 +14,38 @@ class BorrowBookController extends Controller
      */
     public function store(Request $request)
     {
+        Log::info('Borrow Request Data:', $request->all());
+        Log::info('Session Data:', ['student_id' => session('student_id')]);
+
         $validated = $request->validate([
             'student_id' => 'required|integer|exists:students,id',
             'book_id' => 'required|integer|exists:books,id',
-            'status' => 'required|string',
+            'status' => 'required|string|in:pending,active',
             'date_borrowed' => 'required|date',
-            'date_returned' => 'nullable|date'
         ]);
 
         try {
+            $existingBorrow = BorrowRecord::where('student_id', $validated['student_id'])
+                ->where('book_id', $validated['book_id'])
+                ->whereIn('status', ['pending', 'active'])
+                ->first();
+
+            if ($existingBorrow) {
+                return redirect()->back()->with('error', 'You already have a pending or active borrow request for this book.');
+            }
+
             BorrowRecord::create($validated);
+
             return redirect()->back()->with('success', 'Borrow request submitted successfully!');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Failed to submit borrow request.');
+            Log::error('Borrow Request Failed:', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return redirect()->back()
+                ->with('error', 'Failed to submit borrow request: ' . $e->getMessage())
+                ->withInput();
         }
-    }
-
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(BorrowRecord $borrowRecord)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(BorrowRecord $borrowRecord)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, BorrowRecord $borrowRecord)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(BorrowRecord $borrowRecord)
-    {
-        //
     }
 }

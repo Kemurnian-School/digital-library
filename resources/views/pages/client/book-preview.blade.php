@@ -29,7 +29,7 @@
 
             {{-- Borrow Button --}}
             @if(session()->has('student_id'))
-                <form action="{{ url('borrow/create') }}" method="POST" class="mt-4">
+                <form action="{{ route('borrow.store') }}" method="POST" class="mt-4">
                     @csrf
                     <input type="hidden" name="student_id" value="{{ session('student_id') }}">
                     <input type="hidden" name="book_id" value="{{ $book->id }}">
