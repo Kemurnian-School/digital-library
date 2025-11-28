@@ -17,9 +17,9 @@ if ! docker-compose ps | grep -q "app.*Up"; then
     exit 1
 fi
 
-# Install composer dependencies
-echo "Installing Composer dependencies..."
+echo "Installing Composer and NPM dependencies..."
 docker-compose exec -T app composer install --no-interaction
+docker-compose exec -T app npm install
 
 # Generate app key if needed
 echo "Generating application key..."
@@ -29,9 +29,10 @@ docker-compose exec -T app php artisan key:generate --force
 echo "Waiting for MySQL to be fully ready..."
 sleep 5
 
-# Run migrations
+# Run migrations and seed
 echo "Running migrations..."
 docker-compose exec -T app php artisan migrate --force
+docker-compose exec -T app php artisan db:seed
 
 echo "Fixing permissions..."
 docker-compose exec -T app chmod -R 777 storage bootstrap/cache
