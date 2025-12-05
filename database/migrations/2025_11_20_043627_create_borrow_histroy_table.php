@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('borrow_histroy', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->foreignId('student_id')->whatever('students');
-            $table->foreignId('class_id')->whatever('classroom');
-            $table->foreignId('book_id')->whatever('books');
+            $table->foreignId('student_id')->constrained('students');
+            $table->foreignId('classroom_id')->constrained('classroom');
+            $table->foreignId('book_id')->constrained('books');
             $table->date('date_borrowed')->nullable();
             $table->date('date_returned')->nullable();
         });

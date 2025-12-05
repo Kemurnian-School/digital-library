@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
-use App\Models\BorrowRecord;
+use App\Models\ActiveBorrowRecord;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -25,7 +25,7 @@ class BorrowBookController extends Controller
         ]);
 
         try {
-            $existingBorrow = BorrowRecord::where('student_id', $validated['student_id'])
+            $existingBorrow = ActiveBorrowRecord::where('student_id', $validated['student_id'])
                 ->where('book_id', $validated['book_id'])
                 ->whereIn('status', ['pending', 'active'])
                 ->first();
@@ -34,7 +34,7 @@ class BorrowBookController extends Controller
                 return redirect()->back()->with('error', 'You already have a pending or active borrow request for this book.');
             }
 
-            BorrowRecord::create($validated);
+            ActiveBorrowRecord::create($validated);
 
             return redirect()->back()->with('success', 'Borrow request submitted successfully!');
         } catch (\Exception $e) {

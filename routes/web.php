@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\{
     BookController as AdminBookController,
+    ClassroomController,
     GenresController,
     StudentsController,
     LoginController as AdminLoginController
@@ -67,6 +68,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/', [GenresController::class, 'index'])->name('index');
             Route::post('/', [GenresController::class, 'store'])->name('store');
             Route::delete('/delete', [GenresController::class, 'bulkDelete'])->name('delete');
+        });
+
+        // Classroom Routes
+        Route::prefix('classroom')->name('classroom.')->group(function () {
+            Route::get('/', [ClassroomController::class, 'index'])->name('index');
         });
 
         // Students Routes

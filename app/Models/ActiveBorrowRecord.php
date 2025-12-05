@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Enums\BorrowStatus;
 
-class BorrowRecord extends Model
+class ActiveBorrowRecord extends Model
 {
     use HasFactory;
 
@@ -14,7 +14,7 @@ class BorrowRecord extends Model
 
     protected $fillable = [
         'student_id',
-        'class_id',
+        'classroom_id',
         'book_id',
         'status',
         'date_borrowed',
@@ -40,7 +40,7 @@ class BorrowRecord extends Model
      */
     public function classroom()
     {
-        return $this->belongsTo(Classroom::class, 'class_id');
+        return $this->belongsTo(Classroom::class, 'classroom_id');
     }
 
     /**

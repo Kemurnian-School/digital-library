@@ -13,7 +13,7 @@ class Classroom extends Model
     protected $table = 'classroom';
 
     protected $fillable = [
-        'class_id'
+        'classroom_id'
     ];
 
     public $timestamps = false;

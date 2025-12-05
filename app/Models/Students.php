@@ -18,6 +18,6 @@ class Students extends Model
     ];
     public function borrowRecords()
     {
-        return $this->hasMany(BorrowRecord::class, 'student_id');
+        return $this->hasMany(ActiveBorrowRecord::class, 'student_id');
     }
 }

@@ -18,7 +18,8 @@ class DatabaseSeeder extends Seeder
             GenresSeeder::class,
             StudentsSeeder::class,
             AdminSeeder::class,
-            ClassroomSeeder::class
+            ClassroomSeeder::class,
+            BookSeeder::class
         ]);
     }
 }

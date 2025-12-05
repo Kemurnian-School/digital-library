@@ -13,9 +13,9 @@ class ClassroomSeeder extends Seeder
     public function run(): void
     {
         Classroom::create([
-            'class_id' => '1A',
-            'class_id' => '2B',
-            'class_id' => '3C',
+            'classroom_id' => '1A',
+            'classroom_id' => '2B',
+            'classroom_id' => '3C',
         ]);
     }
 }
