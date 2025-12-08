@@ -6,7 +6,7 @@ use App\Http\Controllers\Admin\{
     GenresController,
     StudentsController,
     LoginController as AdminLoginController,
-    BorrowRequestsController
+    BorrowRequestsController as AdminBorrowRequestsController
 };
 use App\Http\Controllers\Client\{
     HomeController,
@@ -89,7 +89,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         // Borrow request Routes
         Route::prefix('borrow-requests')->name('borrow-requests.')->group(function () {
-            Route::get('/', [BorrowRequestsController::class, 'index'])->name('index');
+            Route::get('/', [AdminBorrowRequestsController::class, 'index'])->name('index');
         });
     });
 });

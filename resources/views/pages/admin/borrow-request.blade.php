@@ -1,9 +1,9 @@
-@extends('layout.admin')
+@extends('layouts.admin')
 
 @section('content')
 <div>
     @foreach($borrowRequests as $borrowRequest)
-    <span>{{ $borrowReques->id }}</span>
+    <span>{{ $borrowRequest->id }}</span>
     @endforeach
 </div>
 

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\ActiveBorrowRecord;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,7 @@ class BorrowRequestsController extends Controller
      */
     public function index()
     {
-        $borrowRequests = ActiveBorrowRecord::select('id', 'student_id', 'book_id', 'status');
+        $borrowRequests = ActiveBorrowRecord::select('id', 'student_id', 'book_id', 'status')->get();
         return view('pages.admin.borrow-request', compact('borrowRequests'));
     }
 
