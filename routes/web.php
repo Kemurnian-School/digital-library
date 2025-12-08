@@ -5,7 +5,8 @@ use App\Http\Controllers\Admin\{
     ClassroomController,
     GenresController,
     StudentsController,
-    LoginController as AdminLoginController
+    LoginController as AdminLoginController,
+    BorrowRequestsController
 };
 use App\Http\Controllers\Client\{
     HomeController,
@@ -71,8 +72,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
         });
 
         // Classroom Routes
-        Route::prefix('classroom')->name('classroom.')->group(function () {
+        Route::prefix('classrooms')->name('classrooms.')->group(function () {
             Route::get('/', [ClassroomController::class, 'index'])->name('index');
+            Route::post('/create', [ClassroomController::class, 'store'])->name('store');
+            Route::delete('/delete', [ClassroomController::class, 'bulkDelete'])->name('bulkDelete');
         });
 
         // Students Routes
@@ -82,6 +85,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::post('/import', [StudentsController::class, 'import'])->name('import');
             Route::delete('/', [StudentsController::class, 'bulkDelete'])->name('delete');
             Route::put('/reset', [StudentsController::class, 'passwordReset'])->name('reset');
+        });
+
+        // Borrow request Routes
+        Route::prefix('borrow-requests')->name('borrow-requests.')->group(function () {
+            Route::get('/', [BorrowRequestsController::class, 'index'])->name('index');
         });
     });
 });

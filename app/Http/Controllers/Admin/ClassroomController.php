@@ -30,7 +30,11 @@ class ClassroomController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'classroom_id' => 'required|string'
+        ]);
+        Classroom::create($validated);
+        return redirect()->route('admin.classrooms.index');
     }
 
     /**
@@ -63,5 +67,14 @@ class ClassroomController extends Controller
     public function destroy(Classroom $classroom)
     {
         //
+    }
+
+    public function bulkDelete(Request $request)
+    {
+        $ids = $request->input('classroom_ids', []);
+        if (!empty($ids)) {
+            Classroom::whereIn('id', $ids)->delete();
+        }
+        return redirect()->route('admin.classrooms.index');
     }
 }

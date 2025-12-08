@@ -15,9 +15,10 @@ class Sidebar extends Component
         $this->links = [
             ['label' => 'Dashboard', 'href' => '/admin'],
             ['label' => 'Books', 'href' => '/admin/books'],
-            ['label' => 'Classroom', 'href' => '/admin/classroom'],
+            ['label' => 'Classrooms', 'href' => '/admin/classrooms'],
             ['label' => 'Students', 'href' => '/admin/students'],
             ['label' => 'Genres', 'href' => '/admin/genres'],
+            ['label' => 'Borrow Request', 'href' => '/admin/borrow-request'],
         ];
     }
 

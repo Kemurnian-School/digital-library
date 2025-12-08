@@ -38,7 +38,7 @@ class GenresController extends Controller
             'name' => $request->input('name')
         ]);
 
-        return redirect()->route('pages.genres');
+        return redirect()->route('admin.pages.genres');
     }
 
     /**
