@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Enums\BorrowStatus;
 
-class ActiveBorrowRecord extends Model
+class BorrowRequests extends Model
 {
     use HasFactory;
 
