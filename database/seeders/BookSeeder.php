@@ -26,6 +26,7 @@ class BookSeeder extends Seeder
         ]);
 
         $bookData = [
+            'id' => '1',
             'name'     => 'Book Name',
             'year'     => 2024,
             'author'   => 'Book Author',

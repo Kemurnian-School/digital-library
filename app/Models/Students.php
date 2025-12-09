@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\BorrowRequests;
 
 class Students extends Model
 {
@@ -18,6 +19,6 @@ class Students extends Model
     ];
     public function borrowRecords()
     {
-        return $this->hasMany(ActiveBorrowRecord::class, 'student_id');
+        return $this->hasMany(BorrowRequests::class, 'student_id');
     }
 }

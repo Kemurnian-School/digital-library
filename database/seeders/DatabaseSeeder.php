@@ -19,7 +19,8 @@ class DatabaseSeeder extends Seeder
             StudentsSeeder::class,
             AdminSeeder::class,
             ClassroomSeeder::class,
-            BookSeeder::class
+            BookSeeder::class,
+            BorrowRequestsSeeder::class,
         ]);
     }
 }

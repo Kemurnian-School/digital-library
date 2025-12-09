@@ -14,16 +14,19 @@ class StudentsSeeder extends Seeder
     {
         $students = [
             [
+                'id' => '1',
                 'nis' => '1001',
                 'name' => 'Aulia Rahman',
                 'level' => 'sd',
             ],
             [
+                'id' => '2',
                 'nis' => '1002',
                 'name' => 'Bagas Pratama',
                 'level' => 'smp',
             ],
             [
+                'id' => '3',
                 'nis' => '1003',
                 'name' => 'Citra Lestari',
                 'level' => 'sma',
