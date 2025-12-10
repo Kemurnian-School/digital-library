@@ -19,6 +19,7 @@ class Sidebar extends Component
             ['label' => 'Students', 'href' => '/admin/students'],
             ['label' => 'Genres', 'href' => '/admin/genres'],
             ['label' => 'Borrow Requests', 'href' => '/admin/borrow-requests'],
+            ['label' => 'Borrow History', 'href' => '/admin/borrow-history'],
         ];
     }
 
