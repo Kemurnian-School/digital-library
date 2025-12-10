@@ -10,7 +10,7 @@ class BorrowRequests extends Model
 {
     use HasFactory;
 
-    protected $table = 'active_borrow';
+    protected $table = 'borrow_requests';
 
     protected $fillable = [
         'student_id',

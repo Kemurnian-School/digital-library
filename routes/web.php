@@ -90,6 +90,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Borrow request Routes
         Route::prefix('borrow-requests')->name('borrow-requests.')->group(function () {
             Route::get('/', [AdminBorrowRequestsController::class, 'index'])->name('index');
+            Route::put('/borrow-requests/{id}', [AdminBorrowRequestsController::class, 'update'])->name('update');
         });
     });
 });

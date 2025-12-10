@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -10,13 +9,13 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('active_borrow', function (Blueprint $table) {
+        Schema::create('borrow_requests', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->foreignId('student_id')->constrained('students');
             $table->foreignId('classroom_id')->nullable()->constrained('classroom');
             $table->foreignId('book_id')->constrained('books');
-            $table->enum('status', ['pending', 'active'])->default('pending');
+            $table->enum('status', ['pending', 'borrowed', 'rejected', 'finished'])->default('pending');
             $table->date('date_borrowed')->nullable();
             $table->date('date_returned')->nullable();
         });
@@ -27,6 +26,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('active_borrow');
+        Schema::dropIfExists('borrow_requests');
     }
 };
