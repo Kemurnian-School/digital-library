@@ -54,35 +54,50 @@
                         </span>
                     </td>
                     <td class="py-2 px-4">
-                        <form id="form-{{ $borrowRequest->id }}" action="{{ route('admin.borrow-requests.update', $borrowRequest->id) }}" method="POST">
-                            @csrf
-                            @method('PUT')
+                        @if($borrowRequest->status->value === 'pending')
+                            <form id="form-{{ $borrowRequest->id }}" action="{{ route('admin.borrow-requests.update', $borrowRequest->id) }}" method="POST">
+                                @csrf
+                                @method('PUT')
 
-                            <select name="classroom_id" class="border px-2 py-1 rounded w-full bg-white"
-                                @if($borrowRequest->status->value !== 'pending') disabled @endif>
-                                <option value="">Select Classroom</option>
-                                @foreach($classrooms ?? [] as $classroom)
-                                    <option value="{{ $classroom->id }}"
-                                        {{ $borrowRequest->classroom_id == $classroom->id ? 'selected' : '' }}>
-                                        {{ $classroom->classroom_id }}
-                                    </option>
-                                @endforeach
-                            </select>
+                                <select name="classroom_id" class="border px-2 py-1 rounded w-full bg-white">
+                                    <option value="">Select Classroom</option>
+                                    @foreach($classrooms ?? [] as $classroom)
+                                        <option value="{{ $classroom->id }}"
+                                            {{ $borrowRequest->classroom_id == $classroom->id ? 'selected' : '' }}>
+                                            {{ $classroom->classroom_id }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                        @else
+                            <span class="text-gray-700">
+                                {{ $borrowRequest->classroom ? $borrowRequest->classroom->classroom_id : '-' }}
+                            </span>
+                        @endif
                     </td>
                     <td class="py-2 px-4">
-                            <input type="date" name="date_borrowed"
-                                value="{{ $borrowRequest->date_borrowed }}"
-                                class="border px-2 py-1 rounded w-full bg-white"
-                                @if($borrowRequest->status->value !== 'pending') disabled @endif>
+                            @if($borrowRequest->status->value === 'pending')
+                                <input type="date" name="date_borrowed"
+                                    value="{{ $borrowRequest->date_borrowed }}"
+                                    class="border px-2 py-1 rounded w-full bg-white">
+                            @else
+                                <span class="text-gray-700">
+                                    {{ $borrowRequest->date_borrowed ? \Carbon\Carbon::parse($borrowRequest->date_borrowed)->format('d M Y') : '-' }}
+                                </span>
+                            @endif
                     </td>
                     <td class="py-2 px-4">
-                            <input type="date" name="date_returned"
-                                value="{{ $borrowRequest->date_returned }}"
-                                class="border px-2 py-1 rounded w-full bg-white"
-                                @if($borrowRequest->status->value === 'pending') disabled
-                                @elseif($borrowRequest->status->value !== 'borrowed') disabled @endif>
+                            @if($borrowRequest->status->value === 'borrowed')
+                                <input type="date" name="date_returned"
+                                    value="{{ $borrowRequest->date_returned }}"
+                                    class="border px-2 py-1 rounded w-full bg-white">
+                            @else
+                                <span class="text-gray-700">
+                                    {{ $borrowRequest->date_returned ? \Carbon\Carbon::parse($borrowRequest->date_returned)->format('d M Y') : '-' }}
+                                </span>
+                            @endif
                     </td>
                     <td class="py-2 px-4">
+                            @if($borrowRequest->status->value === 'pending' || $borrowRequest->status->value === 'borrowed')
                             <div class="flex gap-2">
                                 @if($borrowRequest->status->value === 'pending')
                                     <button type="submit" name="action" value="approve"
@@ -101,7 +116,10 @@
                                     </button>
                                 @endif
                             </div>
-                        </form>
+                            </form>
+                            @else
+                                <span class="text-gray-500">-</span>
+                            @endif
                     </td>
                 </tr>
                 @empty
