@@ -12,6 +12,7 @@ services:
       - mysql
     environment:
       - COMPOSER_ALLOW_SUPERUSER=1
+    restart: unless-stopped
 
   nginx:
     image: nginx:alpine
@@ -24,6 +25,7 @@ services:
       - app
     networks:
       - laravel
+    restart: unless-stopped
 
   vite:
     build:
@@ -36,11 +38,19 @@ services:
       - laravel
     environment:
       - COMPOSER_ALLOW_SUPERUSER=1
-    command: sh -c "npm install && npm run build"
+    command: sh -c "npm run build"
+    deploy:
+      resources:
+        limits:
+          memory: 512M
 
   mysql:
-    image: mysql:8
+    image: mysql:5.7
     command: --innodb_buffer_pool_size=128M
+    deploy:
+      resources:
+        limits:
+          memory: 1G
     environment:
       MYSQL_DATABASE: laravel
       MYSQL_USER: laravel
@@ -50,6 +60,7 @@ services:
       - mysql_data:/var/lib/mysql
     networks:
       - laravel
+    restart: unless-stopped
 
 volumes:
   mysql_data:

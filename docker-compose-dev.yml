@@ -38,10 +38,10 @@ services:
       - laravel
     environment:
       - COMPOSER_ALLOW_SUPERUSER=1
-    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
+    command: sh -c "npm run dev -- --host 0.0.0.0"
 
   mysql:
-    image: mysql:8
+    image: mysql:5.7
     environment:
       MYSQL_DATABASE: laravel
       MYSQL_USER: laravel
