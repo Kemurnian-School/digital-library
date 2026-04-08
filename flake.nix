@@ -9,7 +9,7 @@
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
-      php = pkgs.php83;
+      php = pkgs.php82;
     in
     {
       devShells.${system}.default = pkgs.mkShell {
