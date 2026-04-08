@@ -25,5 +25,11 @@
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true
+  },
+  "resources/js/pdfviewer.js": {
+    "file": "assets/pdfviewer-DqXEiNyH.js",
+    "name": "pdfviewer",
+    "src": "resources/js/pdfviewer.js",
+    "isEntry": true
   }
 }

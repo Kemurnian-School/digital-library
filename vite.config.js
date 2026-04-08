@@ -9,6 +9,7 @@ export default defineConfig({
                 "resources/css/app.css",
                 "resources/js/app.js",
                 "resources/images/logo.png",
+                "resources/js/pdfviewer.js"
             ],
             refresh: true,
         }),
